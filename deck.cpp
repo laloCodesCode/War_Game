@@ -49,3 +49,9 @@ Card* Deck::draw()
 
     return draw_card;
 }
+
+
+vector<Card*>& Deck::Get_All_Cards() 
+{
+    return full_deck;
+}

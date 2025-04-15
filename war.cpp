@@ -8,27 +8,49 @@ using namespace std;
 
 War::War()
 {
-    Deck Deck;
-    Deck.shuffle();
-    Deal_Cards(Deck);
+   // Deck Deck;
+   // Deck.shuffle();
+   // Deal_Cards(Deck);
+   Original_Deck.shuffle();
+   Deal_Cards(Original_Deck);
+
+
+
 }
 
 
 War::~War()
 {
-    while(!Deck_Player.empty())
-    {
-        delete Deck_Player.front();
-        Deck_Player.pop();
-    }
+   // while(!Deck_Player.empty())
+   // {
+   //     delete Deck_Player.front();
+   //     Deck_Player.pop();
+   // }
 
-    while(!Deck_Computer.empty())
-    {
-        delete Deck_Computer.front();
-        Deck_Computer.pop();
-    }
+   // while(!Deck_Computer.empty())
+   // {
+   //     delete Deck_Computer.front();
+   //     Deck_Computer.pop();
+   // }
+
+
+
+   // while(!Deck_Player.empty()) Deck_Player.pop();
+   // while(!Deck_Computer.empty()) Deck_Computer.pop();
+   // for (Card* c : Original_Deck.Get_All_Cards()) 
+   // {
+   // delete c;
+
+  // }
+
+
+
+    while (!Deck_Player.empty())
+    Deck_Player.pop(); // No delete
+
+    while (!Deck_Computer.empty())
+    Deck_Computer.pop(); // No delete
 }
-
 
 
 
@@ -39,7 +61,7 @@ War::~War()
 void War:: Deal_Cards(Deck& Deck)
 {
     int i;
-    for(int i =0; i < 52; i++){}
+    for(int i =0; i < 52; i++)
     {
         Card* card = Deck.draw();
 
@@ -132,53 +154,38 @@ void War::Play_Round()
 
 
 
-void War:: War_War(vector<Card*>&pile)
+void War::War_War(vector<Card*>& pile)
 {
-    while (true) 
-    {
-        if (Deck_Player.size() < 2 || Deck_Computer.size() < 2) 
-        {
-            cout << "Not enough cards for WAR. GAME OVER."<<endl;
-        }
+    if (Deck_Player.size() < 2 || Deck_Computer.size() < 2) {
+        cout << "Not enough cards for WAR. GAME OVER." << endl;
+        return;
     }
 
-
-
     Card* P_Face_Down = Deck_Player.front(); Deck_Player.pop();
-    Card* P_Face_Up = Deck_Player.front();Deck_Player.pop();
+    Card* P_Face_Up = Deck_Player.front(); Deck_Player.pop();
     Card* C_Face_Down = Deck_Computer.front(); Deck_Computer.pop();
     Card* C_Face_Up = Deck_Computer.front(); Deck_Computer.pop();
 
     pile.insert(pile.end(), {P_Face_Down, P_Face_Up, C_Face_Down, C_Face_Up});
 
-
-    cout<<"YOU Play WAR! "<<endl;
-    P_Face_Down -> print();
-
-    cout<<"COMPUTER Play WAR! "<<endl;
-    C_Face_Down -> print();
-
+    cout << "YOU Play WAR! "; P_Face_Up->print();
+    cout << "COMPUTER Play WAR! "; C_Face_Up->print();
 
     int result = P_Face_Up->compareValue(*C_Face_Up);
 
-
-    if(result > 0)
-    {
-        cout<<"You won this round!"<<endl;
+    if (result > 0) {
+        cout << "You won the WAR!" << endl;
         for (Card* card : pile) Deck_Player.push(card);
-        return;
-    }else if(result < 0)
-    {
-        cout<<"The computer won this round!"<<endl;
+    } else if (result < 0) {
+        cout << "Computer won the WAR!" << endl;
         for (Card* card : pile) Deck_Computer.push(card);
-        return;
-    }else
-    {
-        cout<<"WAR CONTINUES!"<<endl;
-        return;
+    } else {
+        cout << "WAR CONTINUES!" << endl;
+        War_War(pile);  // Recursive war
     }
-
 }
+
+
 
 
 bool War::Continue_Questionmark() 
@@ -186,5 +193,5 @@ bool War::Continue_Questionmark()
     string input;
     cout << "Continue playing? (y/n): ";
     cin >> input;
-    return input == "y" || input == "n";
+    return input == "y" || input == "Y";
 }

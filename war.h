@@ -14,6 +14,9 @@ class War
     public:
         War();
         ~War();
+        
+    private:
+        Deck Original_Deck;
     
     //PLAY!
     public:
